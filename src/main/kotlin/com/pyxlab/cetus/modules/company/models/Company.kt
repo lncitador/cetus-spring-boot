@@ -2,6 +2,7 @@ package com.pyxlab.cetus.modules.company.models
 
 import com.pyxlab.cetus.modules.address.Address
 import com.pyxlab.cetus.modules.company.enums.Status
+import com.pyxlab.cetus.modules.user.models.User
 import com.pyxlab.cetus.modules.provider.enums.Status as ProviderStatus
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
@@ -49,6 +50,9 @@ data class Company(
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "company")
     val document: Document,
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
+    val providers: List<User>,
 
     @NotNull
     @CreatedDate

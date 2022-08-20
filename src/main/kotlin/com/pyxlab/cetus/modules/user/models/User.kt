@@ -1,5 +1,6 @@
 package com.pyxlab.cetus.modules.user.models
 
+import com.pyxlab.cetus.modules.company.models.Company
 import com.pyxlab.cetus.modules.provider.enums.Status
 import com.pyxlab.cetus.modules.user.enums.Assigning
 import java.util.*
@@ -23,10 +24,15 @@ data class User(
 
     val role: Status = Status.functionary,
 
-    val assigning: Assigning = Assigning.keyuser
+    val assigning: Assigning = Assigning.keyuser,
 
-    // @hasOne(() => CompaniesUser)
-    // public company: HasOne<typeof CompaniesUser>
+    @ManyToOne
+    @JoinTable(
+        name = "company_users",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "company_id")]
+    )
+     val company: Company
 
     // @hasOne(() => VendorsUser)
     // public vendor: HasOne<typeof VendorsUser>
