@@ -1,23 +1,23 @@
-package com.pyxlab.cetus.modules.company.models
+package com.pyxlab.cetus.modules.vendor.models
 
 import com.pyxlab.cetus.modules.address.models.Address
-import com.pyxlab.cetus.modules.company.enums.Status
 import com.pyxlab.cetus.modules.contact.Contact
 import com.pyxlab.cetus.modules.user.models.User
+import com.pyxlab.cetus.modules.vendor.enums.Status
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
 import java.util.UUID
 import javax.persistence.*
-import javax.validation.constraints.*
+import javax.validation.constraints.NotNull
 
 @Entity
-@Table(name = "companies")
-data class Company(
+@Table(name = "vendors")
+data class Vendor(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    val id: UUID = UUID.randomUUID(),
+    val id: UUID,
 
     @NotNull
     @Column(unique = true, length = 14)
@@ -29,27 +29,20 @@ data class Company(
     @Column(name = "fantasy_name")
     val fantasyName: String,
 
-    @OneToMany(mappedBy = "company")
+    val status: Status,
+
+    @OneToOne(mappedBy = "vendor", cascade = [CascadeType.ALL])
+    var documents: Document,
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    val user: User,
+
+    @OneToMany(mappedBy = "vendor")
+    val contact: List<Contact>,
+
+    @OneToMany(mappedBy = "vendor")
     val address: List<Address>,
-
-    val status: Status = Status.NEW,
-
-    @Column(name = "cost_center")
-    val costCenter: String,
-
-    val segment: String,
-
-    @Column(name = "supplier_type")
-    val supplierType: com.pyxlab.cetus.shared.enums.Status,
-
-    @OneToMany(mappedBy = "company")
-    val contacts: List<Contact>,
-
-    @OneToOne(mappedBy = "company")
-    val document: Document,
-
-    @OneToMany(mappedBy = "company")
-    val providers: List<User>,
 
     @NotNull
     @CreatedDate

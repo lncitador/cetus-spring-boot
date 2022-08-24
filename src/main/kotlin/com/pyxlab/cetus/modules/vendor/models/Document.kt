@@ -1,36 +1,39 @@
-package com.pyxlab.cetus.modules.company.models
+package com.pyxlab.cetus.modules.vendor.models
 
-import com.pyxlab.cetus.modules.company.models.Company
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
-@Entity(name = "CompanyDocuments")
-@Table(name = "company_documents")
-data class Document(
+@Entity(name = "VendorDocuments")
+@Table(name = "vendor_documents")
+data class Document (
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    val id: UUID,
+    var id: UUID,
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id", nullable = false, unique = true)
-    val company: Company,
+    val cs: String, // Contrato Social
 
-    val cs: String,
+    val im: String, // Inscrição Municipal
 
-    val im: String,
-
-    val ie: String,
+    val ie: String, // Inscrição Estadual
 
     val dre: String,
 
-    val cps: String,
+    val tgc: String, // Termos Gerais de Compra
 
-    val balance: String,
+    val certified: String,
+
+    val nda: String,
+
+    val balance: String, // Balanço
+
+    @OneToOne
+    @JoinColumn(name = "vendor_id")
+    val vendor: Vendor,
 
     @NotNull
     @CreatedDate

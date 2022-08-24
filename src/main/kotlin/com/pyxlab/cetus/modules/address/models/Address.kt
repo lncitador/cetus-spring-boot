@@ -1,6 +1,7 @@
-package com.pyxlab.cetus.modules.company.models
+package com.pyxlab.cetus.modules.address.models
 
 import com.pyxlab.cetus.modules.company.models.Company
+import com.pyxlab.cetus.modules.vendor.models.Vendor
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
@@ -8,29 +9,33 @@ import java.util.UUID
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
-@Entity(name = "CompanyDocuments")
-@Table(name = "company_documents")
-data class Document(
+@Entity
+@Table(name = "address")
+data class Address (
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     val id: UUID,
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id", nullable = false, unique = true)
-    val company: Company,
+    val cep: String,
 
-    val cs: String,
+    val state: String,
 
-    val im: String,
+    val city: String,
 
-    val ie: String,
+    val neighborhood: String,
 
-    val dre: String,
+    val street: String,
 
-    val cps: String,
+    val number: String,
 
-    val balance: String,
+    @ManyToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "company_id")
+    var company: Company? = null,
+
+    @ManyToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "vendor_id")
+    var vendor: Vendor? = null,
 
     @NotNull
     @CreatedDate
@@ -41,4 +46,4 @@ data class Document(
     @LastModifiedDate
     @Column(name = "updated_at")
     val updatedAt: LocalDateTime,
-)
+    )
